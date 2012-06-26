@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: gitwig
+Version: 0.1
+Summary: a static blog engine with git backend
+Home-page: UNKNOWN
+Author: Holger Frey
+Author-email: mail@holgerfrey.de
+License: BSD
+Description:  
+Keywords: blog
+Platform: UNKNOWN

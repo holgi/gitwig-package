@@ -1,0 +1,16 @@
+setup.py
+gitwig/__init__.py
+gitwig/cache.py
+gitwig/common.py
+gitwig/content.py
+gitwig/renderer.py
+gitwig/renderset.py
+gitwig/settings.py
+gitwig/workflow.py
+gitwig.egg-info/PKG-INFO
+gitwig.egg-info/SOURCES.txt
+gitwig.egg-info/dependency_links.txt
+gitwig.egg-info/entry_points.txt
+gitwig.egg-info/not-zip-safe
+gitwig.egg-info/requires.txt
+gitwig.egg-info/top_level.txt
