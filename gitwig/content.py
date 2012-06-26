@@ -94,7 +94,7 @@ class BaseContent(object):
     def load(self, file_path):
         """ reads and parses the content of a file """
         common.log.debug("base content: loading from '%s'" % file_path)
-        file_handle = codecs.open(file_path, "r")
+        file_handle = codecs.open(file_path, "r", encoding="utf-8")
         self.read(file_handle)
         file_handle.close()
     

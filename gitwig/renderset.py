@@ -6,6 +6,7 @@ there are two possibilities:
 """
 
 # global imports
+import codecs
 import os
 
 # local imports
@@ -167,7 +168,8 @@ class Update(Renderset):
         page = content.StaticPage(git_item.path)
         if not is_old:
             # if it is a new or updated page, read its content from the git blob
-            page.read(git_item.data_stream)
+            utf8_content = codecs.decode(git_item.data_stream.read(), "utf-8")
+            page.parse_content(utf8_content)
         return [page]
         
     def _process_blog_post(self, git_item, is_old):
@@ -186,7 +188,8 @@ class Update(Renderset):
             # if it is a new or updated blog post, read its content from the git 
             # blob and add it to the cache
             posting = content.BlogPost(git_item.path)
-            posting.read(git_item.data_stream)
+            utf8_content = codecs.decode(git_item.data_stream.read(), "utf-8")
+            posting.parse_content(utf8_content)
             self.cache.add(posting)
         # calculate the related date and tag indices of the blog post
         day_id = common.date_tuple(posting)

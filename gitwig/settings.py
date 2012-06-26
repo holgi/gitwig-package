@@ -36,7 +36,7 @@ class Settings(object):
         """ loads a config file and returns an instance """
         common.log.info("settings: reading from file '%s'" % path)
         instance = cls()
-        file_handle = codecs.open(path, "r")
+        file_handle = codecs.open(path, "r", encoding="utf-8")
         instance.load(file_handle)
         file_handle.close()
         return instance
