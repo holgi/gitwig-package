@@ -1,9 +1,12 @@
+""" some sensible defaults and loading of a settings file """
+
 import codecs
 import yaml
 
 from . import common
 
 class Settings(object):
+    """ some sensible defaults and loading of a settings file """
 
     template_dir =  "templates"
     blog_dir =      "blog"
@@ -21,13 +24,16 @@ class Settings(object):
     blog_title =    "my gitwig blog"
     author =        "myself"
     
+    # extension of source files
     source_exts = [".md", ".mkd", ".mdown", ".mkdown", ".markdown", ".html"]
     
     def __init__(self):
+        """ initialization """
         pass
 
     @classmethod
     def from_file(cls, path):
+        """ loads a config file and returns an instance """
         common.log.info("settings: reading from file '%s'" % path)
         instance = cls()
         file_handle = codecs.open(path, "r")
@@ -36,6 +42,7 @@ class Settings(object):
         return instance
     
     def load(self, file_handle):
+        """ loads the settings from a file like object """
         tmp_settings = yaml.load(file_handle)
         for key, value in tmp_settings.iteritems():
             setattr(self, key, value if value else "")
