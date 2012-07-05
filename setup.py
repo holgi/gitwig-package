@@ -27,7 +27,7 @@ setup(
         "markdown>=2.1",
         "Pygments>=1.5",
         "genshi>=0.6",
-        "GitPython>=0.3.2",
+        "GitPython>=0.3.2.RC1",
         "PyYAML>=3.10"
     ],
     entry_points="""
