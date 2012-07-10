@@ -1,0 +1,6 @@
+blog_title: a new static blog
+author: Your Name Here
+url_prefix: http://blog.example.com
+media_prefix: http://static.example.com/media
+deploy_dir: <path to webserver directory>
+
