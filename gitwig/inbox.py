@@ -59,7 +59,7 @@ class FolderInbox(object):
     def prepare_source_files(self):
         """ reads blog posts in the inbox directory, sets default headers """
         for inbox_file_path in self.source_files:
-            common.log.debug("inbox: prepping blog post " % inbox_file_path)
+            common.log.debug("inbox: prepping blog post '%s'" % inbox_file_path)
             default_headers = self.get_default_article_headers(inbox_file_path)
             blog_post = content.BlogPost(inbox_file_path, default_headers)
             blog_post.load(inbox_file_path)

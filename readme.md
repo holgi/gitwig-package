@@ -5,6 +5,7 @@ gitwig
 
 What makes it different from the other projects? Well most of them don't combine them in the way I like :-) The main focus here is, that the rendering of the content to HTML happens on the server and not locally on my machine. This has the main advantage is, that I don't have to wait for my laptop to finish the rendering and deploying all the changes to the server. The main disadvantages might be that there is no good error reporting in place and that the rendering might take longer.
 
+
 requirements
 ------------
 
@@ -15,10 +16,12 @@ If you want to use `gitwig` you need access to a server where you can
 - create git repositories that are accessible from your local machine
 - configure different directories served by a webserver (I would suggest [nginx][6])
 
+
 blog support
 ------------
 
 I should define this a little bit more. With "blog support" I mean the automatic creation of daily, monthly, yearly and tag indices. And of cause a blog page, an atom feed and a tag overview page.
+
 
 how the repositories are used
 -----------------------------
@@ -30,6 +33,7 @@ The basic setup depends on at least three git repositories:
 3. `local`: a local clone of the `hub`, where blog posts etc. are added
 
 By using hooks inside the two server repositories, any changes pushed to the `hub` repository will automatically be rendered.
+
 
 setup of the server
 -------------------
@@ -46,36 +50,37 @@ A short notice: To destinquish between server and local commands I will use `s>`
        s:live> git push origin master
 
 5. download this project on your server and run `python setup.py install`
-6. in the direcotry `files` are five files that need your attention.
-    1. `bare-post-update-hook.sh` 
-        
-        adjust the paths, move it to `blog-hub.git/hooks/post-update` and set the execution bit.
+6. in the direcotry `files` are six files that need your attention.
+
+   You will need to move them to their destination as noted below and (except for the `config.yaml` file) you'll need to adjust the file paths in them and set the execution bit
+   
+    
+    1. `bare-post-update-hook.sh` -> `blog-hub.git/hooks/post-update`
         
         This will pull any changes from the `hub` to the `live` repository.
     
-    2. `live-post-merge-hook.py`
-        
-        move it to `blog-live/hooks/post-merge` and set the execution bit.
+    2. `live-post-merge-hook.py` -> `blog-live/hooks/post-merge`
         
         This will render the changes after they were pulled from the `hub`.
         
-    3. `live-post-commit-hook.sh` 
-    
-        adjust the path, move it to `blog-live/hooks/post-commit` and set the execution bit.
+    3. `live-post-commit-hook.sh` -> `blog-live/hooks/post-commit`
     
         This will push any changes commited to the `live` repository to the `hub` and render the site.
         
-    4. `gitwig-update.py`
-        
-        move it somewhere in your $PATH as `gitwig-update` and set the execution bit
+    4. `gitwig-update.py` -> in your $PATH as `gitwig-update`
         
         This script is run to render the site. You might need to adjust the locale in the script. If you want to change some things – for example adding code highlighting – this is your starting point.
-    
-    5. `config.yaml` 
+
+    5. `gitwig-inbox.py` -> in your $PATH as `gitwig-inbox`
         
-        move this to your live repository and adjust the settings. All config possibilities can be found in the `settings.py` module of the `gitwig` package.
+        This script is to process the `inbox` folder in your live or local directory.
+    
+    6. `config.yaml` -> `blog-live/`
+        
+        All config possibilities can be found in the `settings.py` module of the `gitwig` package.
 
 7. Adjust your webserver path to point to the deploy directory and the static directory. On my server I keep the deploy directory outside of the `live` directory and use a symlink to the static directory inside the `live` repository.
+
 
 setup of the local machine
 --------------------------
@@ -85,7 +90,23 @@ setup of the local machine
     l> git add -A
     l> git push origin master
 
+you'll need get a copy of the `gitwig-inbox.py` file and put it somewhere in your $PATH as gitwig-inbox. Don't forget to adjust the paths in the file and set the execution bit.
+
 That was easy!
+
+
+your first blog post
+--------------------
+
+Open up your favorite text editor and write something like:
+
+    Title: My first blog post with gitwig.
+    tags:  testing, myblog
+    
+    This is my first blog post with gitwig.
+
+Save it to your inbox as "my-first-blog-post.md" and then issue the `gitwig-inbox` command from the command line. If everything worked, you should see the changes on your website.
+
 
 some unsorted remarks
 ----------------------
@@ -95,16 +116,13 @@ some unsorted remarks
 - the rerendering of the site will not delete old items first. this is intentional.
 - the deploy directory should not be under git control.
 - if a path to a linked file - like an image - does not contain a slash `/`, the path will be prepended with the setting of `media_prefix`. Just write your content normally and put all linked stuff in the `static/media` directory.
-- all headers must be set in a blog post.
+- all headers must be set in a blog post. When you use the `gitwig-inbox` command, missing header fields will be added to your posts in the inbox.
 
 todos
 -----
 
-Make it easier to write blog posts :-) Currently the blog posts must be written including all headers and put in the right directory. That's not nice. 
-
-For the next step I will include an `inbox` folder, where new blog posts and related media files can be stored. The headers of the posts will be automatically added accordingly and the media files moved to the target folder.
-
-I still think about a possibility to add a cron based mail inbox…
+- I still think about a possibility to add a cron based mail inbox…
+- and of cause a better documentation. As always. (will propably never happen, as always :-)
 
 ---
 
