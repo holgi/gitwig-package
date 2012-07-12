@@ -12,6 +12,11 @@ class NeedsRebuildError(Exception):
     """ an update from git is not possible and a rebuild should be issued """
     pass
 
+class InboxFileExistsError(Exception):
+    """ an update from git is not possible and a rebuild should be issued """
+    pass
+
+
 
 def is_source_file(path, source_extensions):
     """ checks if the file is not hidden and has an source file extension """

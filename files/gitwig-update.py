@@ -1,7 +1,4 @@
-#!/Users/holgerfrey/Developer/gitwig/bin/python
-#
-# An example hook script to prepare a packed repository for use over
-# dumb transports.
+#!/bin/python
 #
 # rename it to gitwig-update, move it to your path and set the execution bit
 

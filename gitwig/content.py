@@ -43,7 +43,7 @@ def format_tags(tag_list):
 def format_header_source(key, value):
     """ pretty formatting of key an value used in headers of the content """
     pretty_key = key.capitalize() + ":"
-    return u"%-7s %s\n" % (pretty_key, value)
+    return u"%-9s %s\n" % (pretty_key, value)
 
 
 class BaseContent(object):
@@ -106,7 +106,14 @@ class BaseContent(object):
     def parse_content(self, content):
         """ parses a content string for headers and body """
         # separate raw headers and the body
-        raw_headers, self.body = content.split(HEADER_BODY_SEPERATOR, 1)
+        parts = content.split(HEADER_BODY_SEPERATOR, 1)
+        raw_headers = parts[0]
+        if not ":" in raw_headers or len(parts) == 1:
+            # possibly only a body is present
+            raw_headers, self.body = "", content
+        else:
+            # we found (possibly) a header and a body
+            self.body = parts[1]
         # parse the raw headers
         for line in StringIO.StringIO(raw_headers):
             try:
@@ -141,8 +148,8 @@ class BaseContent(object):
             to_python, from_python = functions
             value = self.headers.get(key, "")
             # add a line to the source header
-            src_header += format_header_source(key, from_python(value))
-        return src_header + u"\n" + self.body
+            src_headers += format_header_source(key, from_python(value))
+        return src_headers + u"\n" + self.body
 
     def get_url_parts(self):
         """ should return all parts of the url as a tuple
@@ -179,9 +186,20 @@ class BlogPost(BaseContent):
         be ("2012", "06", "31", "slug.html")
         """
         slug, ext = os.path.splitext(os.path.basename(self.id))
-        date_tuple = common.date_tuple(self)
-        date_parts = ["%02d" % part for part in date_tuple]
+        date_parts = ["%02d" % part for part in common.date_tuple(self)]
         return tuple(date_parts + [slug + ".html"])
+    
+    def write(self, dest_path):
+        """ writes the blog post to a file, used in gitwig.inbox """
+        file_handle = open(dest_path, "w")
+        file_handle.write(self.get_source())
+        file_handle.close()
+    
+    def get_archive_path(self):
+        parts = ["%02d" % part for part in common.date_tuple(self)]
+        parts.append(os.path.basename(self.id))
+        return os.path.join(*parts)
+
     
 
 class StaticPage(BaseContent):

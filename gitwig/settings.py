@@ -13,6 +13,7 @@ class Settings(object):
     page_dir =      "pages"
     deploy_dir =    "deploy"
     media_dir =     "static/media"
+    inbox_dir =     "_inbox"
     
     cache_path = "cache.pickle"
 
@@ -23,6 +24,9 @@ class Settings(object):
     media_prefix =  "http://www.example.com/static/media"
     blog_title =    "my gitwig blog"
     author =        "myself"
+    
+    default_title = "untitled"
+    default_tags =  "untagged"
     
     # extension of source files
     source_exts = [".md", ".mkd", ".mdown", ".mkdown", ".markdown", ".html"]
