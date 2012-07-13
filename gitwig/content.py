@@ -192,7 +192,7 @@ class BlogPost(BaseContent):
     def write(self, dest_path):
         """ writes the blog post to a file, used in gitwig.inbox """
         file_handle = open(dest_path, "w")
-        file_handle.write(self.get_source())
+        file_handle.write(self.get_source().encode("utf-8"))
         file_handle.close()
     
     def get_archive_path(self):
